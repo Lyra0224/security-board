@@ -674,11 +674,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     /* 子面板2：异常明细滚动（独立面板）*/
     const p4 = '<div class="crawl fill" style="min-height:0;">' + a.records.map(r =>
       '<div class="rec"><span class="rt">' + r.t + '</span><span class="rr r-' + (r.x === '高' ? 'h' : r.x === '中' ? 'm' : 'l') + '">' + r.x + '</span><span class="rd"><b>' + esc(r.p) + '</b> <span>· ' + r.r + ' · ' + esc(r.k) + '</span><br>' + esc(r.d) + '</span></div>').join('') + '</div>';
-    /* 子面板3：趋势图缩小版 */
-    const p2 = '<div class="chart-wrap" style="min-height:64px;max-height:96px;"><canvas id="trendCv" aria-label="异常时段趋势图"></canvas></div>' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">' +
-      '<div class="clegend"><span>实测</span><span class="f">AI 预测</span></div><span style="color:#8294b3;font-size:9px;">' + esc(a.forecastText) + '</span></div>';
-    /* 子面板3：TOP岗点与根因 */
+        /* 子面板3：TOP岗点与根因 */
     const p3 = '<div class="grid2"><div>' +
       '<div class="ft" style="color:#8294b3;font-size:9px;margin-bottom:6px;">异常岗点 TOP3</div>' +
       a.topPosts.map((p, i) => barRow((i + 1) + ' ' + p.name, p.count, a.topPosts[0].count + 1, p.count + ' 起 · ' + p.region, i === 0 ? 'r' : (i === 1 ? 'w' : ''))).join('') +
@@ -689,9 +685,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       '<div class="sim-card"><div class="sim-score">' + a.similar.similarity + '%<small>相似度</small></div><div class="sim-copy"><b>' + esc(a.similar.name) + '</b>措施：' + esc(a.similar.action) + ' · ' + esc(a.similar.duration) + '<br>结果：' + esc(a.similar.result) + '</div></div>';
     return pnl('01', 'CCP 异常总览', '当日 ' + a.total + ' 起 · 分区域', p1, { fill: true }) +
       pnl('02', '异常明细滚动', '按时间排序 · 悬停暂停', p4, { grow: true, fill: true }) +
-      pnl('03', '异常时段趋势与 AI 预测', '当日 07:00–21:00', p2, { fill: true }) +
-      pnl('04', 'TOP 岗点与根因分析', '多源关联推理', p3, { fill: true }) +
-      pnl('05', '关联对象与相似案例', '异常知识库', rel, { fill: true });
+      pnl('03', 'TOP 岗点与根因分析', '多源关联推理', p3, { fill: true }) +
+      pnl('04', '关联对象与相似案例', '异常知识库', rel, { fill: true });
   }
 
   /* ---- 02 排班出勤 ---- */
