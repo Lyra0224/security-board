@@ -273,6 +273,48 @@
     .fi input,.fi select,.fi textarea { width:100%; padding:6px 8px; border-radius:6px; border:1px solid rgba(111,151,255,.24); background:rgba(6,11,24,.9); color:var(--text); font-size:11px; }
     .fi input:focus,.fi select:focus,.fi textarea:focus { border-color:var(--a1); outline:none; }
     .fi textarea { resize:vertical; min-height:40px; }
+
+    /* ===== 数据维护中心·白色主题 ===== */
+    #editOvl.ovl { background:rgba(30,40,60,.45); }
+    #editOvl .modal { background:#ffffff; border-color:#d8e0ee; box-shadow:0 26px 80px rgba(15,30,70,.35); }
+    #editOvl .m-head { border-bottom:2px solid #2b5fd9; background:#f4f7fd; }
+    #editOvl .m-head h2 { color:#14224a; }
+    #editOvl .m-head .sub { color:#5a6b8c; }
+    #editOvl .m-body { background:#ffffff; }
+    #editOvl .m-nav { border-right:1px solid #e3e9f4; background:#f7f9fd; }
+    #editOvl .m-nav button { color:#3d4c6b; }
+    #editOvl .m-nav button:hover { color:#14224a; border-color:#c3d2ee; background:#eef3fc; }
+    #editOvl .m-nav button.active { color:#fff; border-color:#2b5fd9; background:#2b5fd9; }
+    #editOvl .fgrp { border:1px solid #dbe3f0; background:#fbfcfe; }
+    #editOvl .fgrp .ft { color:#2b5fd9; font-weight:700; }
+    #editOvl .fitem { border:1px dashed #c4d0e6; background:#f7f9fd; }
+    #editOvl .fitem .ft2 { color:#3d4c6b; }
+    #editOvl .fi > span { color:#41527a; font-weight:600; }
+    #editOvl .fi input,#editOvl .fi select,#editOvl .fi textarea {
+      border:1px solid #c9d4e8; background:#f1f4fa; color:#22304f; font-size:11px; }
+    #editOvl .fi input::placeholder,#editOvl .fi textarea::placeholder { color:#aeb9cf; }
+    #editOvl .fi input:focus,#editOvl .fi select:focus,#editOvl .fi textarea:focus { border-color:#2b5fd9; background:#fff; outline:none; box-shadow:0 0 0 2px rgba(43,95,217,.15); }
+    /* 已填写：白底 + 蓝色左边线 + 深色加粗字，一眼区分填没填 */
+    #editOvl .fi:has(input:not(:placeholder-shown)) input,
+    #editOvl .fi:has(textarea:not(:placeholder-shown)) textarea {
+      background:#ffffff; border:1px solid #2b5fd9; border-left:4px solid #2b5fd9; color:#0e1c3f; font-weight:600; }
+    #editOvl .fi:has(input:not(:placeholder-shown)) > span,
+    #editOvl .fi:has(textarea:not(:placeholder-shown)) > span { color:#2b5fd9; }
+    #editOvl .m-foot { border-top:1px solid #e3e9f4; background:#f7f9fd; }
+    #editOvl .m-foot .hint { color:#6b7a99; }
+    #editOvl .del-item { border-color:#e05a76; color:#d03560; background:#fdeef2; }
+    /* 底部按钮：白底深字，主按钮实色，高对比 */
+    #editOvl .m-foot .btn { background:#ffffff; border:1px solid #b9c7e2; color:#22355e;
+      font-weight:600; padding:8px 15px; border-radius:8px; box-shadow:0 1px 2px rgba(20,34,74,.08); }
+    #editOvl .m-foot .btn:hover { background:#eef3fc; border-color:#2b5fd9; color:#2b5fd9; }
+    #editOvl .m-foot .btn.hot { background:linear-gradient(135deg,#2b5fd9,#1f8a6d); border-color:transparent; color:#ffffff; font-weight:700; }
+    #editOvl .m-foot .btn.hot:hover { filter:brightness(1.08); color:#fff; }
+    #editOvl .m-foot #cloudPublish { background:#ffffff; border:1.5px solid #1f8a6d; color:#0e6b50; font-weight:700; }
+    #editOvl .m-foot #cloudPublish:hover { background:#e8f7f0; border-color:#0e6b50; color:#0a5a42; }
+    #editOvl .m-foot #excelImport { background:#ffffff; border:1.5px solid #2b6fd9; color:#1849a8; font-weight:700; }
+    #editOvl .m-foot #excelImport:hover { background:#eaf2fe; border-color:#1849a8; color:#123a8a; }
+    /* 新增一条按钮 */
+    #editOvl .addrow { color:#2b5fd9; }
     .fi.ck { display:flex; align-items:center; gap:6px; }
     .fi.ck input { width:auto; }
     .del-item { position:absolute; right:6px; top:6px; width:20px; height:20px; border-radius:5px; border:1px solid rgba(255,77,109,.4); color:#ff8ba0; font-size:10px; display:grid; place-items:center; background:rgba(255,77,109,.08); }
@@ -410,8 +452,8 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
         <span class="hint">在线版工作流：修改数据 → 保存并应用 → 点「☁ 发布到云端」一键更新，所有访问者 60 秒内自动收到；首次使用需在弹窗里配置一次 GitHub 令牌</span>
         <button id="editApply" class="btn hot" type="button">保存并应用</button>
         <button id="editExport" class="btn" type="button">导出数据</button>
-        <button id="cloudPublish" class="btn" type="button" style="border-color:rgba(61,220,151,.5);color:#c9ffe9">☁ 发布到云端</button>
-        <button id="excelImport" class="btn" type="button" style="border-color:rgba(77,163,255,.5);color:#bcdcff">⇪ 导入 Excel</button>
+        <button id="cloudPublish" class="btn" type="button">☁ 发布到云端</button>
+        <button id="excelImport" class="btn" type="button">⇪ 导入 Excel</button>
         <button id="editImport" class="btn" type="button">导入数据</button>
         <button id="editReset" class="btn" type="button">恢复默认</button>
         <input id="importFile" type="file" accept=".json" class="sr">
@@ -1007,12 +1049,122 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return;
       const saved = JSON.parse(raw);
       if (saved.data) Object.keys(DEFAULT_DATA).forEach(k => { if (saved.data[k] !== undefined) DATA[k] = saved.data[k]; });
-      if (saved.ai) Object.keys(DEFAULT_AI).forEach(k => { if (saved.ai[k] !== undefined) AI_VIEW[k] = saved.ai[k]; });
       if (saved.duty) DUTY.splice(0, DUTY.length, saved.duty);
     } catch (e) { console.warn('本地数据加载失败', e); }
   }
   function renderTitle() { const el = $id('bdTitle'); if (el) el.textContent = '安保一部日报-' + ((DATA.meta && DATA.meta.date) || ''); }
-  function refreshAll() { renderTitle(); renderKpis(); renderNav(); renderMain(); renderAiColumn(); }
+  function refreshAll() { buildAI(); renderTitle(); renderKpis(); renderNav(); renderMain(); renderAiColumn(); }
+
+  /* ==================== AI 研判·由数据自动生成 ==================== */
+  function nn(v) { const n = Number(v); return isFinite(n) ? n : 0; }
+  function pct(a, b) { return b > 0 ? Math.round(a / b * 1000) / 10 : 0; }
+  function topOf(arr, key, n) {
+    if (!Array.isArray(arr)) return [];
+    return arr.slice().sort((x, y) => nn(y[key]) - nn(x[key])).slice(0, n || 1);
+  }
+  function buildAI() {
+    const A = {};
+    /* 01 CCP稽核 */
+    try {
+      const au = DATA.audit || {};
+      const total = nn(au.total);
+      const regions = au.byRegion || [];
+      const risk = au.byRisk || [];
+      const cats = au.byCategory || [];
+      const closure = au.closure || {};
+      const topReg = topOf(regions, 'value', 1)[0];
+      const topCat = topOf(cats, 'value', 2);
+      const sumRisk = risk.reduce((a, r) => a + nn(r.value), 0) || total;
+      const high = nn((risk.find(r => /高/.test(r.name)) || {}).value);
+      A.audit = { summary: '当日稽核异常 ' + total + ' 起，' +
+          (topReg ? topReg.name + '区占比 ' + pct(nn(topReg.value), total) + '%，' : '') +
+          (topCat.length ? '主要类别为' + topCat.map(c => c.name + '(' + nn(c.value) + ')').join('、') + '。' : '') +
+          '高风险 ' + high + ' 起，建议围绕高频异常类别开展今日宣导与现场抽考。',
+        alerts: [
+          high > 0 ? { lv: 'lv-r', t: high + ' 起高风险异常', c: '高风险异常需优先复核，建议当日内完成整改确认与闭环登记。' }
+                   : { lv: 'lv-g', t: '无高风险异常', c: '当日未记录高风险异常，保持常规巡查频次即可。' },
+          topCat[0] ? { lv: 'lv-w', t: topCat[0].name + '类异常居首（' + nn(topCat[0].value) + ' 起）', c: '建议针对该类别按不低于 10% 比例开展班队长现场抽考。' } : null,
+          topReg ? { lv: 'lv-b', t: topReg.name + '区异常占比 ' + pct(nn(topReg.value), total) + '%', c: '建议该区域今日加密一次全岗点巡查，重点关注异常集中岗点。' } : null,
+          (closure.pending && nn(closure.pending) > 0) ? { lv: 'lv-w', t: nn(closure.pending) + ' 起待复核', c: '已整改 ' + nn(closure.done) + ' 起 / 复核中 ' + nn(closure.reviewing) + ' 起，待复核事项建议 48 小时内闭环。' } : null
+        ].filter(Boolean) };
+    } catch (e) { A.audit = AI_VIEW.audit; }
+    /* 02 排班出勤 */
+    try {
+      const st = DATA.staffing || {};
+      const rate = nn(st.rate);
+      A.staffing = { summary: '总人力 ' + nn(st.total) + ' 人、实出勤 ' + nn(st.actual) + ' 人、出勤率 ' + rate + '%。' +
+          (rate >= 95 ? '人力结构整体健康。' : '出勤率低于 95%，需关注人力缺口。'),
+        alerts: [
+          rate >= 95 ? { lv: 'lv-g', t: '出勤率 ' + rate + '% 达标', c: '应出勤 ' + nn(st.total) + ' / 实出勤 ' + nn(st.actual) + '，出勤情况良好。' }
+                     : { lv: 'lv-w', t: '出勤率 ' + rate + '% 偏低', c: '缺勤 ' + (nn(st.total) - nn(st.actual)) + ' 人，建议核查请假分布并安排机动支援。' },
+          { lv: 'lv-b', t: '保安力量构成', c: '华东警卫 ' + nn(st.guards) + ' 人 / 干部 ' + nn(st.cadres) + ' 人，建议按区域均衡配置巡查力量。' }
+        ] };
+    } catch (e) { A.staffing = AI_VIEW.staffing; }
+    /* 03 岗位数据 */
+    try {
+      const po = DATA.posts || {};
+      const items = po.items || [];
+      const running = items.filter(i => /run|进行/.test(String(i.status))).length;
+      A.posts = { summary: '当日开岗 ' + nn(po.total) + ' 个（华东 ' + nn(po.hd) + ' / 外包 ' + nn(po.out) + '），人岗比 ' + nn(po.ratio) + '，' +
+          (items.length ? '岗位项目推进中 ' + items.length + ' 项。' : ''),
+        alerts: [
+          { lv: 'lv-b', t: '白/夜班开岗', c: '白班 ' + nn(po.shifts && po.shifts.day) + ' 个 / 夜班 ' + nn(po.shifts && po.shifts.night) + ' 个，建议重点核查夜班岗位覆盖。' },
+          running > 0 ? { lv: 'lv-w', t: running + ' 项岗位项目进行中', c: '建议班队长每日跟进进度，重点确认新增/调整岗位的到位情况。' } : null
+        ].filter(Boolean) };
+    } catch (e) { A.posts = AI_VIEW.posts; }
+    /* 04 专案看板 */
+    try {
+      const pr = DATA.projects || {};
+      const key = pr.key || [];
+      const paused = key.filter(k => /pause|暂停/.test(String(k.stage) + String(k.st))).length;
+      A.projects = { summary: '在管专案 ' + nn(pr.total) + ' 案次（A 专案 ' + nn(pr.aPro) + ' / Non-A ' + nn(pr.nonA) + '），NPI ' + nn(pr.npi) + ' / MP ' + nn(pr.mp) + '，重点跟进 ' + key.length + ' 个专案。',
+        alerts: [
+          paused > 0 ? { lv: 'lv-w', t: paused + ' 个专案处于暂停', c: '暂停专案建议每周跟进处置进度，防止物料与资产滞留风险。' }
+                     : { lv: 'lv-g', t: '专案推进正常', c: '无暂停专案，保持既有节奏跟进。' },
+          { lv: 'lv-b', t: 'NPI 专案 ' + nn(pr.npi) + ' 个', c: 'NPI 线体导入期安保需求变化快，建议提前介入设备与岗位规划。' }
+        ] };
+    } catch (e) { A.projects = AI_VIEW.projects; }
+    /* 05 弱电设备 */
+    try {
+      const de = DATA.devices || {};
+      const total = nn(de.total);
+      const normal = nn(de.normal);
+      const rate = pct(normal, total);
+      A.devices = { summary: '安防设备 ' + total + ' 台，正常率 ' + rate + '%（正常 ' + normal + ' / 闲置 ' + nn(de.idle) + ' / 待报废 ' + nn(de.scrap) + '）。',
+        alerts: [
+          nn(de.scrap) > 0 ? { lv: 'lv-w', t: nn(de.scrap) + ' 台设备待报废', c: '建议本月内完成报废流程，避免点检稽核合规风险。' } : null,
+          nn(de.idle) > 0 ? { lv: 'lv-b', t: nn(de.idle) + ' 台设备闲置', c: '闲置设备建议评估调拨复用至新专案，减少新购成本。' } : null,
+          rate >= 95 ? { lv: 'lv-g', t: '设备正常率 ' + rate + '%', c: '设备整体运行健康，保持例行巡检。' }
+                     : { lv: 'lv-w', t: '设备正常率 ' + rate + '% 偏低', c: '建议排查异常设备并安排检修，重点区域优先处理。' }
+        ].filter(Boolean) };
+    } catch (e) { A.devices = AI_VIEW.devices; }
+    /* 06 重点事项 */
+    try {
+      const af = DATA.affairs || {};
+      const items = af.items || [];
+      const done = items.filter(i => /done|完成/.test(String(i.status))).length;
+      const run = items.filter(i => /run|进行|侦办/.test(String(i.status))).length;
+      A.affairs = { summary: '跨部门协作事项 ' + (items.length || nn(af.total)) + ' 项：已完成 ' + done + ' 项、进行中 ' + run + ' 项' +
+          (items.length - done - run > 0 ? '、其他 ' + (items.length - done - run) + ' 项。' : '。'),
+        alerts: [
+          run > 0 ? { lv: 'lv-w', t: run + ' 项事项进行中', c: '建议逐项确认 DRI 跟进节奏，临期事项提前预警。' }
+                  : { lv: 'lv-g', t: '无进行中事项', c: '当前事项均已闭环。' },
+          done > 0 ? { lv: 'lv-g', t: done + ' 项已完成闭环', c: '已完成事项建议归档留存台账备查。' } : null
+        ].filter(Boolean) };
+    } catch (e) { A.affairs = AI_VIEW.affairs; }
+    /* 07 培训台账 */
+    try {
+      const tr = DATA.training || {};
+      const topics = tr.topics || [];
+      A.training = { summary: '当日培训 ' + nn(tr.sessions) + ' 场、参训 ' + nn(tr.trainees) + ' 人' +
+          (topics.length ? '，覆盖 ' + topics.map(t => t.name).join('、') + '。' : '。'),
+        alerts: [
+          nn(tr.trainees) > 0 ? { lv: 'lv-g', t: '参训 ' + nn(tr.trainees) + ' 人', c: '稽核高频岗位建议 100% 纳入复训名单。' } : null,
+          { lv: 'lv-b', t: '培训巩固建议', c: '针对当日稽核高频异常类别，建议追加对应场景的实操演练各 1 场。' }
+        ].filter(Boolean) };
+    } catch (e) { A.training = AI_VIEW.training; }
+    Object.keys(A).forEach(k => { if (A[k] && A[k].summary) AI_VIEW[k] = A[k]; });
+  }
 
   /* ---- 编辑器字段定义 ---- */
   function f(p, l, t) { return { p: p, l: l, t: t || 't' }; }
@@ -1063,20 +1215,18 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       { t: '培训主题', arr: 'training.topics', fields: [fa('name', '主题'), fa('n', '人数', 'n'), fa('trainer', '讲师')], add: true },
       { t: '培训图片（看板内上传或在此删除）', images: 'training.images' }
     ]},
-    { id: '_ai', label: '✦ AI 研判与指数', groups: null },
-    { id: '_duty', label: '✦ 值班 DRI', groups: null }
   ];
 
   const editState = { def: EDIT_DEFS[0] };
 
   function fiHtml(label, val, type, attrs) {
-    if (type === 'a') return '<label class="fi"><span>' + label + '</span><textarea rows="2" ' + attrs + '>' + esc(val) + '</textarea></label>';
-    if (type === 'n') return '<label class="fi"><span>' + label + '</span><input type="number" step="any" ' + attrs + ' value="' + esc(val) + '"></label>';
+    if (type === 'a') return '<label class="fi"><span>' + label + '</span><textarea rows="2" placeholder=" " ' + attrs + '>' + esc(val) + '</textarea></label>';
+    if (type === 'n') return '<label class="fi"><span>' + label + '</span><input type="number" step="any" placeholder=" " ' + attrs + ' value="' + esc(val) + '"></label>';
     if (type && type.indexOf('s:') === 0) {
       const opts = type.slice(2).split('|');
       return '<label class="fi"><span>' + label + '</span><select ' + attrs + '>' + opts.map(o => '<option value="' + o + '"' + (String(o) === String(val) ? ' selected' : '') + '>' + (o === '' ? '默认' : o) + '</option>').join('') + '</select></label>';
     }
-    return '<label class="fi"><span>' + label + '</span><input ' + attrs + ' value="' + esc(val) + '"></label>';
+    return '<label class="fi"><span>' + label + '</span><input placeholder=" " ' + attrs + ' value="' + esc(val) + '"></label>';
   }
   function getByPath(obj, path) {
     let cur = obj;
@@ -1093,8 +1243,6 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     $id('mNav').innerHTML = EDIT_DEFS.map(d =>
       '<button type="button" class="' + (d === editState.def ? 'active' : '') + '" data-def="' + d.id + '">' + d.label + '</button>').join('');
     const form = $id('mForm');
-    if (editState.def.id === '_ai') { form.innerHTML = aiFormHtml(); return; }
-    if (editState.def.id === '_duty') { form.innerHTML = dutyFormHtml(); return; }
     form.innerHTML = editState.def.groups.map(g => {
       let inner = '';
       if (g.fields && g.fields[0] && g.fields[0].p !== undefined) inner = '<div class="fgrid">' + g.fields.map(fd => {
@@ -1253,7 +1401,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
           const saved = JSON.parse(reader.result);
           if (!saved.data || !saved.data.audit) throw new Error('JSON 格式不正确');
           Object.keys(DEFAULT_DATA).forEach(k => { if (saved.data[k] !== undefined) DATA[k] = saved.data[k]; });
-          if (saved.ai) Object.keys(DEFAULT_AI).forEach(k => { if (saved.ai[k] !== undefined) AI_VIEW[k] = saved.ai[k]; });
+
           if (saved.duty) DUTY.splice(0, DUTY.length, saved.duty);
           if (saved.domains) saved.domains.forEach(sd => { const d = DOMAINS.find(x => x.id === sd.id); if (d) { d.score = sd.score; d.scoreLabel = sd.scoreLabel; } });
           persist(); refreshAll(); renderEditor(); announce('数据导入成功，看板已刷新');
@@ -1270,7 +1418,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
   function applyCloud(payload) {
     try {
       if (payload.data) Object.keys(DEFAULT_DATA).forEach(k => { if (payload.data[k] !== undefined) DATA[k] = payload.data[k]; });
-      if (payload.ai) Object.keys(DEFAULT_AI).forEach(k => { if (payload.ai[k] !== undefined) AI_VIEW[k] = payload.ai[k]; });
+
       if (payload.duty) DUTY.splice(0, DUTY.length, payload.duty);
     } catch (e) { console.warn('云端数据应用失败', e); }
   }
