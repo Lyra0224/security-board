@@ -1022,11 +1022,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       { t: '看板标题', fields: [f('meta.date', '日报日期（如 2026-08-24）')] }
     ]},
     { id: 'audit', label: '01 · CCP稽核', groups: [
-      { t: '总览', fields: [f('audit.total', '异常总数', 'n'), f('audit.forecastText', 'AI 预测结论', 'a'), f('audit.trendHours.0', '趋势起始标签'), f('audit.forecastHours.1', '预测末尾标签')] },
+      { t: '总览', fields: [f('audit.total', '异常总数', 'n'), ] },
       { t: '区域分布', arr: 'audit.byRegion', fields: [fa('name', '区域'), fa('value', '数量', 'n')], add: true },
       { t: '风险等级', arr: 'audit.byRisk', fields: [fa('name', '名称'), fa('value', '数量', 'n'), fa('tone', '条形色调', 's:r|w|')] },
       { t: '异常类别', arr: 'audit.byCategory', fields: [fa('name', '类别'), fa('value', '数量', 'n')], add: true },
-      { t: '趋势与预测（逗号分隔数值）', fields: [f('audit.__trend', '实测序列'), f('audit.__forecast', '预测序列')] },
       { t: 'TOP 岗点', arr: 'audit.topPosts', fields: [fa('name', '岗点'), fa('count', '次数', 'n'), fa('region', '区域')] },
       { t: 'AI 根因贡献', arr: 'audit.causes', fields: [fa('name', '根因描述', 'a'), fa('value', '贡献度%', 'n'), fa('source', '证据来源')], add: true },
       { t: '异常明细（滚动面板）', arr: 'audit.records', fields: [fa('t', '时间'), fa('r', '区域'), fa('p', '岗点'), fa('d', '异常描述', 'a'), fa('k', '类别'), fa('x', '风险', 's:高|中|低')], add: true },
