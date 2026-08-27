@@ -401,9 +401,10 @@
       </div>
       <div class="m-body"><nav id="mNav" class="m-nav"></nav><div id="mForm" class="m-form"></div></div>
       <div class="m-foot">
-        <span class="hint">在线版工作流：修改 → 保存并应用（本机即时生效）→ 导出数据 → 将导出的 JSON 内容替换服务器上的 data.json，所有访问者 60 秒内自动更新</span>
+        <span class="hint">在线版工作流：修改数据 → 保存并应用 → 点「☁ 发布到云端」一键更新，所有访问者 60 秒内自动收到；首次使用需在弹窗里配置一次 GitHub 令牌</span>
         <button id="editApply" class="btn hot" type="button">保存并应用</button>
         <button id="editExport" class="btn" type="button">导出数据</button>
+        <button id="cloudPublish" class="btn" type="button" style="border-color:rgba(61,220,151,.5);color:#c9ffe9">☁ 发布到云端</button>
         <button id="editImport" class="btn" type="button">导入数据</button>
         <button id="editReset" class="btn" type="button">恢复默认</button>
         <input id="importFile" type="file" accept=".json" class="sr">
@@ -1294,7 +1295,74 @@
   }
   window.__EXPORT_DATA = () => JSON.stringify({ data: DATA, ai: AI_VIEW, duty: DUTY }, null, 1);
 
+  /* ---- 一键发布到 GitHub（免手动改 JSON）---- */
+  const CLOUD_CFG_KEY = 'aww-cloud-cfg';
+  function loadCloudCfg() {
+    try { return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveCloudCfg(cfg) { try { localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(cfg)); } catch (e) {} }
+  async function publishToGitHub() {
+    const cfg = loadCloudCfg();
+    if (!cfg.token || !cfg.repo) { announce('请先在「云端发布设置」中填写 Token 和仓库'); openCloudCfg(); return; }
+    announce('正在发布到云端…');
+    try {
+      const api = 'https://api.github.com/repos/' + cfg.repo + '/contents/data.json';
+      let sha = null;
+      try {
+        const r = await fetch(api, { headers: { Authorization: 'Bearer ' + cfg.token, Accept: 'application/vnd.github+json' } });
+        if (r.ok) sha = (await r.json()).sha;
+      } catch (e) {}
+      const body = JSON.stringify({
+        message: '更新看板数据 ' + new Date().toLocaleString('zh-CN'),
+        content: btoa(unescape(encodeURIComponent(window.__EXPORT_DATA()))),
+        sha: sha || undefined
+      });
+      const put = await fetch(api, {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + cfg.token, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: body
+      });
+      if (!put.ok) {
+        const err = await put.json().catch(() => ({}));
+        throw new Error(err.message || put.status);
+      }
+      cloudHash = '';
+      announce('发布成功！所有访问者约 1 分钟内自动更新');
+    } catch (e) {
+      announce('发布失败：' + (e.message || '网络错误') + '，请检查 Token 权限');
+    }
+  }
+  function openCloudCfg() {
+    const cfg = loadCloudCfg();
+    const saved = '<div style="color:#3ddc97">已保存</div>';
+    const html2 =
+      '<div style="position:fixed;inset:0;background:rgba(5,7,16,.75);z-index:99;display:flex;align-items:center;justify-content:center" onclick="if(event.target===this)this.remove()">' +
+      '<div style="width:min(520px,92vw);background:#101428;border:1px solid #2a3358;border-radius:14px;padding:22px">' +
+      '<h3 style="font-size:14px;margin-bottom:6px">☁ 云端发布设置（一次性配置）</h3>' +
+      '<div style="font-size:10.5px;color:#8291b3;line-height:1.7;margin-bottom:12px">填入 GitHub 令牌后，你在数据维护中心改完数据点「发布到云端」即可，无需再手动编辑 JSON。令牌只保存在你这台电脑的浏览器里。</div>' +
+      '<div style="margin-bottom:10px"><label style="font-size:10px;color:#8291b3;display:block;margin-bottom:3px">仓库（owner/repo，如 Lyra0224/security-board）</label>' +
+      '<input id="cfgRepo" type="text" value="' + (cfg.repo || '') + '" style="width:100%;background:rgba(255,255,255,.04);border:1px solid #242c4e;border-radius:7px;padding:7px 10px;color:#dde5f5;font-size:12px"></div>' +
+      '<div style="margin-bottom:14px"><label style="font-size:10px;color:#8291b3;display:block;margin-bottom:3px">GitHub 令牌（Personal Access Token，需 Contents 读写权限）</label>' +
+      '<input id="cfgToken" type="password" placeholder="github_pat_ 开头" style="width:100%;background:rgba(255,255,255,.04);border:1px solid #242c4e;border-radius:7px;padding:7px 10px;color:#dde5f5;font-size:12px"></div>' +
+      '<div style="display:flex;gap:8px;justify-content:flex-end">' +
+      '<button id="cfgCancel" class="btn" type="button" style="padding:6px 16px;border-radius:8px;border:1px solid #242c4e;background:none;color:#8291b3;cursor:pointer;font-size:12px">取消</button>' +
+      '<button id="cfgSave" type="button" style="padding:6px 16px;border-radius:8px;border:1px solid rgba(61,220,151,.5);background:rgba(61,220,151,.12);color:#c9ffe9;cursor:pointer;font-size:12px">保存设置</button></div>' +
+      '</div></div>';
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html2;
+    document.body.appendChild(wrap.firstElementChild);
+    const box = document.body.lastElementChild;
+    box.querySelector('#cfgCancel').onclick = () => box.remove();
+    box.querySelector('#cfgSave').onclick = () => {
+      saveCloudCfg({ repo: box.querySelector('#cfgRepo').value.trim(), token: box.querySelector('#cfgToken').value.trim() });
+      box.remove(); announce('云端发布设置已保存');
+    };
+  }
+
   /* ==================== 初始化 ==================== */
+  $id('cloudPublish').addEventListener('click', publishToGitHub);
+
   function init() {
     loadSaved();
     initCloud();
