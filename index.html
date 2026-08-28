@@ -727,7 +727,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
       '<div class="sim-card"><div class="sim-score">' + a.similar.similarity + '%<small>相似度</small></div><div class="sim-copy"><b>' + esc(a.similar.name) + '</b>措施：' + esc(a.similar.action) + ' · ' + esc(a.similar.duration) + '<br>结果：' + esc(a.similar.result) + '</div></div>';
     return pnl('01', 'CCP 异常总览', '当日 ' + a.total + ' 起 · 分区域', p1, { fill: true }) +
       pnl('02', '异常明细滚动', '按时间排序 · 悬停暂停', p4, { grow: true, fill: true }) +
-      pnl('03', 'TOP 岗点与根因分析', '多源关联推理', p3, { fill: true }) +
+      pnl('03', 'TOP 岗点与根因分析', '随异常明细实时统计', p3, { fill: true }) +
       pnl('04', '关联对象与相似案例', '异常知识库', rel, { fill: true });
   }
 
@@ -1053,7 +1053,41 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     } catch (e) { console.warn('本地数据加载失败', e); }
   }
   function renderTitle() { const el = $id('bdTitle'); if (el) el.textContent = '安保一部日报-' + ((DATA.meta && DATA.meta.date) || ''); }
-  function refreshAll() { buildAI(); renderTitle(); renderKpis(); renderNav(); renderMain(); renderAiColumn(); }
+  function refreshAll() { deriveAudit(); buildAI(); renderTitle(); renderKpis(); renderNav(); renderMain(); renderAiColumn(); }
+
+  /* ==================== TOP岗点/根因·由异常明细实时统计 ==================== */
+  function deriveAudit() {
+    const a = DATA.audit;
+    const recs = (a.records || []).filter(r => r && (r.p || r.d));
+    if (!recs.length) return;
+    /* TOP 岗点：按岗点聚合 */
+    const cnt = {}, reg = {};
+    recs.forEach(r => {
+      const k = (r.p || '未知岗点').trim();
+      cnt[k] = (cnt[k] || 0) + 1;
+      if (!reg[k]) reg[k] = r.r || '';
+    });
+    const top = Object.keys(cnt).sort((x, y) => cnt[y] - cnt[x]).slice(0, 3)
+      .map(k => ({ name: k, count: cnt[k], region: reg[k] }));
+    if (top.length) a.topPosts = top;
+    /* 根因：按类别聚合占比，类别映射到根因文案 */
+    const cat = {};
+    recs.forEach(r => { const k = (r.k || '其他').trim() || '其他'; cat[k] = (cat[k] || 0) + 1; });
+    const catMap = {
+      '手工安检': '手工安检动作不完整（腰腿/胳膊/帽子漏扫）',
+      '岗位职责': '岗位履职与流程执行不到位',
+      '岗位设备': '设备点检与流程执行走形式',
+      '物品检查': '物品管控与交接流程执行不严',
+      '纪律': '纪律松散（聊天/瞌睡/坐姿）',
+      '权限认证': '权限认证执行不到位',
+    };
+    const causes = Object.keys(cat).sort((x, y) => cat[y] - cat[x]).slice(0, 5).map(k => ({
+      name: catMap[k] || (k + '类流程执行不到位'),
+      value: Math.round(cat[k] / recs.length * 100),
+      source: '当日异常明细实时统计（' + cat[k] + '/' + recs.length + ' 起）',
+    }));
+    if (causes.length) a.causes = causes;
+  }
 
   /* ==================== AI 研判·由数据自动生成 ==================== */
   function nn(v) { const n = Number(v); return isFinite(n) ? n : 0; }
